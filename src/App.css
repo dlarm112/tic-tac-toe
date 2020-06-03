@@ -1,9 +1,23 @@
+.app{
+  text-align: center;
+}
+
+.padme{
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
 .box{
   width: 200px;
   height: 200px;
   border: 1px solid black;
+  text-align: center;
 }
 
 .row{
   display: flex;
+}
+
+.choice{
+  font-size: 150px;
 }

@@ -9,7 +9,6 @@ export default class Board extends Component {
     }
 
     boxClick = (id) =>{
-        console.log("you clicked me", id)
         let squaresFromApp = this.props.squares
         console.log("squares", squaresFromApp)
         squaresFromApp[id]=this.props.isXNext? 'X':'O'

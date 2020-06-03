@@ -20,19 +20,27 @@ export default class App extends Component {
 
   timeTravel = (index) =>{
     console.log(index)
+    
   }
 
   render() {
 
     return (
-    <div>
-      <h1>Tic Tac Toe</h1>
-
-      <Board {...this.state} setTheState={this.setTheState}/>
-      <div>
+    <div className="app">
+      <table className="padme">
+      <tr>
+        <td>
+        <h1>Tic Tac Toe</h1>
+        <Board {...this.state} setTheState={this.setTheState}/>
+        </td>
+     
+        <div className="padme">
         History
-        {this.state.history.map((item, index)=> {return <button onClick={()=>this.timeTravel(index)}>move{index+1}</button>})}
-      </div>
+        {this.state.history.map((item, index)=> {return <p><button onClick={()=>this.timeTravel(index)}>move{index+1}</button></p>})}
+        </div>
+      </tr>
+      </table>
+
     </div>
 
     )
