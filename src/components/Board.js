@@ -8,17 +8,39 @@ export default class Board extends Component {
         return <Square id={num} boxClick={this.boxClick} value={this.props.squares[num]}/>
     }
 
+
+
     boxClick = (id) =>{
+        let start
+        let end
+        let difference
+
+        if (this.calculateWinner(this.props.squares) || this.props.squares[id]) {
+            return;
+        }    
         let squaresFromApp = this.props.squares
-        console.log("squares", squaresFromApp)
         squaresFromApp[id]=this.props.isXNext? 'X':'O'
+        if (squaresFromApp.some(item => item == null)){
+            start=(Date.now())
+        }
+        if (this.calculateWinner(this.props.squares)){
+            end=(Date.now())
+           difference = (Math.floor((this.props.startArray[0] - end)/(-1000)))
+
+        } 
+        this.props.startArray.push(start);
+  
         this.props.setTheState({
             squares:squaresFromApp, 
             isXNext:!this.props.isXNext, 
-            history:[...this.props.history,{squares:squaresFromApp.slice(), isXNext:!this.props.isXNext}]})
-    }
-    // let array =this.props.history.slice()
+            history:[...this.props.history,{squares:squaresFromApp.slice(), isXNext:!this.props.isXNext}],
+            winner:this.props.winner,
+            final:difference,
+          })
 
+    }
+
+   
 
     calculateWinner = (squares) =>{
         const lines = [
@@ -39,12 +61,30 @@ export default class Board extends Component {
         return null;
       }
 
+      postData = async () =>{
+        let data = new URLSearchParams();
+        data.append("player", `${this.props.facebook.name}`);
+        console.log("Score:", `${this.props.final}`)
+        data.append("score", (this.props.final));
+
+        const url = await `https://ftw-highscores.herokuapp.com/tictactoe-dev`;
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: data.toString(),
+          json: true
+        });
+      }
+
     render() {
         const winner = this.calculateWinner(this.props.squares)
         let status = ''
       
         if (winner) {
-            status = 'Winner: ' + winner;
+            status = 'Winner: ' + winner + ' Score: ' + this.props.final
+            this.postData()
           } else {
             status = 'Next player: ' + (this.props.xIsNext ? 'X' : 'O');
           }
